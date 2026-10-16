@@ -4,17 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class ActivitateNoua extends AppCompatActivity {
-
-    private static final String TAG = "Halangau_Alexandru";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,46 +26,62 @@ public class ActivitateNoua extends AppCompatActivity {
             return insets;
         });
 
-        Log.i(TAG, "ActivitateNoua: onCreate - INFO");
-
-        Button button = findViewById(R.id.button);
-        if (button != null) {
-            button.setOnClickListener(this::deschideActivitate);
-        }
+        Log.i("Halangau_Alexandru", "onCreate - INFO");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "ActivitateNoua: onStart - DEBUG");
+        Log.d("Halangau_Alexandru", "onStart - DEBUG");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(TAG, "ActivitateNoua: onResume - VERBOSE");
+        Log.v("Halangau_Alexandru", "onResume - VERBOSE");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.w(TAG, "ActivitateNoua: onPause - WARNING");
+        Log.w("Halangau_Alexandru", "onPause - WARNING");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e(TAG, "ActivitateNoua: onStop - ERROR");
+        Log.e("Halangau_Alexandru", "onStop - ERROR");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "ActivitateNoua: onDestroy - INFO");
+        Log.i("Halangau_Alexandru", "onDestroy - INFO");
     }
 
     public void deschideActivitate(View view) {
         Intent it = new Intent(this, ActivitateRezultat.class);
-        startActivity(it);
+        Bundle bundle = new Bundle();
+        bundle.putString("Mesaj", "Mesaj din prima activitate!");
+        bundle.putInt("numar1", 5);
+        bundle.putInt("numar2", 7);
+        it.putExtras(bundle);
+        startActivityForResult(it, 70);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 70) {
+            if (resultCode == RESULT_OK) {
+                String mesaj = data.getStringExtra("mesaj");
+                int suma = data.getIntExtra("suma", 0);
+
+                StringBuilder builder = new StringBuilder(mesaj);
+                builder.append(" ").append(suma);
+
+                Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

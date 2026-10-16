@@ -1,7 +1,10 @@
 package com.example.activitatedam2026;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class ActivitateRezultat extends AppCompatActivity {
 
-    private static final String TAG = "Halangau_Alexandru";
+    private int suma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,36 +27,28 @@ public class ActivitateRezultat extends AppCompatActivity {
             return insets;
         });
 
-        Log.i(TAG, "ActivitateRezultat: onCreate - INFO");
+        Intent it = getIntent();
+        if (it != null && it.getExtras() != null) {
+            Bundle bundle = it.getExtras();
+            String mesajExtra = bundle.getString("Mesaj", "");
+            String mesaj = (mesajExtra != null) ? mesajExtra : "";
+            int nr1 = bundle.getInt("numar1", 0);
+            int nr2 = bundle.getInt("numar2", 0);
+            suma = nr1 + nr2;
+
+            String textAfisat = mesaj + " " + nr1 + " " + nr2;
+            Toast.makeText(this, textAfisat, Toast.LENGTH_SHORT).show();
+        }
+
+        Log.i("Halangau_Alexandru", "ActivitateRezultat: onCreate - INFO");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "ActivitateRezultat: onStart - DEBUG");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.v(TAG, "ActivitateRezultat: onResume - VERBOSE");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.w(TAG, "ActivitateRezultat: onPause - WARNING");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e(TAG, "ActivitateRezultat: onStop - ERROR");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(TAG, "ActivitateRezultat: onDestroy - INFO");
+    public void intoarcereInActivitate(View view) {
+        String altMesaj = "Mesaj de intoarcere!";
+        Intent it = new Intent();
+        it.putExtra("mesaj", altMesaj);
+        it.putExtra("suma", suma);
+        setResult(RESULT_OK, it);
+        finish();
     }
 }
